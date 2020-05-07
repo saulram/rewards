@@ -13,14 +13,18 @@ function saveWCtransaction(req, res) {
     transaccion.user_email = params.billing.email;
     transaccion.transaction = params.number;
     transaccion.total_points = params.total * 1000
+    if (params.status == 'completed') {
 
-    transaccion.save((err, transactionWCSaved) => {
-        if (err) {
-            throw err;
-        } else {
-            res.status(200).send({ transactionWCSaved });
-        }
-    })
+        transaccion.save((err, transactionWCSaved) => {
+            if (err) {
+                throw err;
+            } else {
+                res.status(200).send({ transactionWCSaved });
+            }
+        });
+    } else {
+        res.status(200).send({ message: 'Orden un no esta completa' });
+    }
 
 
 }
@@ -33,11 +37,11 @@ function getWCtransactions(req, res) {
             });
         } else {
             if (!transacciones) {
-                res.status(500).send({ message: 'No hay transacciones aun' })
+                res.status(500).send({ message: 'No hay transacciones aun' });
             } else {
                 res.status(200).send({
                     transacciones
-                })
+                });
             }
         }
     })
