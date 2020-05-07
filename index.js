@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 var app = require('./app');
-var port= process.env.port || 3977;
+var port= process.env.port || 2424;
 
 mongoose.connect('mongodb://localhost:27017/rewards',(err,res)=>{
     if(err){
