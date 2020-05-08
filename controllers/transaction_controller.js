@@ -47,6 +47,9 @@ function getWCtransactions(req, res) {
     })
 
 }
+function deleteTransaction ( req, res){
+    
+}
 module.exports = {
     saveWCtransaction,
     getWCtransactions

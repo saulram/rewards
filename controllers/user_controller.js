@@ -2,6 +2,8 @@
 var User = require('../models/user_model');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../middlewares/jwt');
+var fs = require('fs');
+var path = require('path');
 
 function saveUser(req, res) {
     var isadmin = req.headers.isadmin;
@@ -353,6 +355,100 @@ function updateUser(req, res) {
 
 }
 
+function deleteUser(req, res) {
+    var userId = req.params.id;
+
+    User.findByIdAndDelete(userId, (err, userDeleted) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al conectar al servidor web para borrar usuario' });
+
+        } else {
+            if (!userDeleted) {
+                res.status(404).send({ message: 'No se encontro usuario a borrar, verificar id' });
+            } else {
+                res.status(200).send({ message: 'Usuario borrado con exito', usuario: userDeleted });
+            }
+        }
+    });
+}
+function getUsers(req, res) {
+    User.find({}, (err, usuarios) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al conectar al servidor de usuarios' });
+        } else {
+            if (!usuarios) {
+                res.status(404).send('No hay usuarios en base de datos');
+            } else {
+                res.status(200).send(usuarios);
+            }
+        }
+    });
+}
+function getOneUser(req, res) {
+    var userId = req.params.id
+    User.findById({ userId }, (err, user) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al conectar al servidor de usuarios' });
+        } else {
+            if (!user) {
+                res.status(404).send('No existe este usuario.');
+            } else {
+                res.status(200).send(user);
+            }
+        }
+    });
+}
+
+function uploadImage(req, res) {
+    var userId = req.params.id;
+    var file_name = 'No Subido...';
+    if (req.files) {
+        var file_path = req.files.image.path;
+        var file_split = file_path.split('/');
+        var file_name = file_split[3];
+
+        var ext_split = file_name.split('.');
+        var file_ext = ext_split[1];
+        if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg') {
+            User.findByIdAndUpdate(userId, { profile_pic: file_name }, (err, userUpdated) => {
+                if (err) {
+                    res.status(500).send({ message: 'No se pudo conectar al servidor de archivos' });
+                } else {
+                    if (!userUpdated) {
+
+                        res.status(404).send({ message: 'No se encontro el usuario en la base de datos' });
+
+                    } else {
+                        res.status(200).send({ message: 'Imagen actualizada', user: userUpdated });
+
+                    }
+                }
+            });
+
+
+        } else {
+            res.status(500).send({ message: 'No puedes subir ficheros que no sean png / jpg / jpeg' })
+        }
+
+    } else {
+        res.status(200).send({ message: 'No subiste imagen' });
+    }
+}
+
+function getUserImage(req, res) {
+    var imageFile = './uploads/img/users/' + req.params.profile_pic;
+    fs.exists(imageFile, (exists) => {
+        if (exists) {
+            res.sendFile(path.resolve(imageFile));
+        } else {
+            res.status(404).send({ message: 'No existe la imagen' });
+        }
+
+    });
+
+
+}
+
 module.exports = {
-    saveUser, loginUser, updateUser
+    saveUser, loginUser, updateUser, deleteUser, getUsers, getOneUser, uploadImage, getUserImage
 }
