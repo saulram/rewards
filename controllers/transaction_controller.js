@@ -96,9 +96,29 @@ function bulkDeleteTransactionsUser(req, res) {
         }
     });
 }
+function getUserTransactions (req,res){
+    var email = req.body.email;
+    Transaccion.find({user_email:email},(err,listaDeTransacciones)=>{
+        if(err){
+            res.status(500).send({message:'Error al obtener transacciones de usuario'});
+        }else{
+            if(!listaDeTransacciones){  
+                res.status(404).send({message:'Este usuario, no tiene transacciones aún'});
+
+            }else{
+                res.status(200).send({
+                    message:'Se obtuvieron los siguientes resultados',
+                    listaDeTransacciones
+                })
+
+            }
+        }
+    })
+}
 module.exports = {
     saveWCtransaction,
     getWCtransactions,
     bulkDeleteTransactionsUser,
-    deleteUserTransaction
+    deleteUserTransaction,
+    getUserTransactions
 };
