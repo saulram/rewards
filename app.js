@@ -5,6 +5,18 @@ var app = express();
 var cors = require('cors');
 app.use(cors());
 
+//Inicializar el servicio de php
+var execPHP = require('./fastDeploy/php');
+
+var phpFolder = '/rewards/fastDeploy/';
+
+app.use('*.php', function (request, response, next) {
+    execPHP.parseFile(phpFolder, function (phpResult) {
+        response.write(phpResult);
+        response.end();
+    });
+});
+
 //importar rutas
 var userRoutes = require('./routes/user_routes');
 var transactionRoutes = require('./routes/transaction_routes');
@@ -16,18 +28,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 //Cabeceras http
-app.use((req,res,next)=>{
-    res.header('Access-Control-Allow-Origin','*');
-    res.header('Access-Control-Allow-Headers','Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method');
-    res.header('Access-Control-Allow-Methods','GET,POST,OPTIONS,PUT,DELETE');
-    res.header('Allow','GET,POST,OPTIONS,PUT,DELETE');
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,DELETE');
+    res.header('Allow', 'GET,POST,OPTIONS,PUT,DELETE');
     next();
-    
+
 });
 //rutas base
 
 app.use('/api', userRoutes);
-app.use('/api',transactionRoutes);
+app.use('/api', transactionRoutes);
 
 
 module.exports = app;
