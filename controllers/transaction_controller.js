@@ -15,15 +15,28 @@ function saveWCtransaction(req, res) {
     transaccion.total_points = params.total * 1000
     if (params.status == 'completed') {
 
-        transaccion.save((err, transactionWCSaved) => {
+        Transaccion.findOne({ transaction: transaccion.transaction, establishment: transaccion.establishment }, (err, recompensa) => {
             if (err) {
-                throw err;
+                res.status(500).send({ message: 'Error al verificar transacciones' });
+
             } else {
-                res.status(200).send({ transactionWCSaved });
+                if (recompensa) {
+
+                    res.status(500).send({ message: 'Ya se ha registrado la transaccion', recompensa })
+
+                } else {
+                    transaccion.save((err, transactionWCSaved) => {
+                        if (err) {
+                            throw err;
+                        } else {
+                            res.status(200).send({ transactionWCSaved });
+                        }
+                    });
+                }
             }
         });
     } else {
-        res.status(200).send({ message: 'Orden un no esta completa' });
+        res.status(200).send({ message: 'Esta orden no esta completa' });
     }
 
 
@@ -47,10 +60,45 @@ function getWCtransactions(req, res) {
     })
 
 }
-function deleteTransaction ( req, res){
-    
+
+function deleteUserTransaction(req, res) {
+    var utransactionId = req.params.tid;
+    Transaccion.findByIdAndDelete(utransactionId, (err, tdeleted) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al borrar la transaccion' });
+        } else {
+            if (!tdeleted) {
+                res.status(404).send({ message: 'Error al borrar la transaccione, no existe.' });
+
+            } else {
+                res.status(200).send({ message: 'Transaccion Borrada con éxito' });
+
+            }
+        }
+    })
+}
+
+function bulkDeleteTransactionsUser(req, res) {
+    var params = req.body;
+    var email = params.email;
+
+    Transaccion.deleteMany({ user_email: email }, (err, transaccionesBorradas) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al borrar las transacciones' });
+
+        } else {
+            if (transaccionesBorradas) {
+                res.status(200).send({ message: 'Borrado con exito', transaccionesBorradas });
+            } else {
+                res.status(404).send({ message: 'No hay registros con ese email' });
+            }
+
+        }
+    });
 }
 module.exports = {
     saveWCtransaction,
-    getWCtransactions
+    getWCtransactions,
+    bulkDeleteTransactionsUser,
+    deleteUserTransaction
 };
