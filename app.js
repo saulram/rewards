@@ -11,6 +11,7 @@ app.use(cors());
 var userRoutes = require('./routes/user_routes');
 var transactionRoutes = require('./routes/transaction_routes');
 var wooRoutes = require('./routes/woo_routes');
+var couponsRoutes = require('./routes/coupon_routes');
 
 
 //Aqui van las rutas de la app
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
 app.use('/api', userRoutes);
 app.use('/api', transactionRoutes);
 app.use('/api', wooRoutes);
+app.use('/api', couponsRoutes);
 
 
 module.exports = app;

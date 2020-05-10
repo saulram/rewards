@@ -45,6 +45,7 @@ function createCoupon(req, res) {
                 coupon.code = response.data.code;
                 coupon.amount = response.data.amount;
                 coupon.min_amount = response.minimum_amount;
+                coupon.status = 0;
                 coupon.save((err,coupon)=>{
                     if(err){
                         res.status(500).send({message:'error al guardar cupon'});

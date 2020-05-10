@@ -9,7 +9,8 @@ var CouponSchema = Schema({
     user_email: String,
     code: String,
     amount:Number,
-    min_amount:Number
+    min_amount:Number,
+    status:Number
 });
 
 module.exports = mongoose.model('Coupon', CouponSchema);

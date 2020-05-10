@@ -1,8 +1,10 @@
 'use strict'
 var Transaccion = require('../models/transaction_model');
+var Coupon = require('../models/coupon_model');
 
 //controlador woocomcerce
 function saveWCtransaction(req, res) {
+
 
     var transaccion = new Transaccion();
     var params = req.body;
@@ -13,8 +15,19 @@ function saveWCtransaction(req, res) {
     transaccion.user_email = params.billing.email;
     transaccion.transaction = params.number;
     transaccion.total_points = params.total * 1000
+    var coupon_code = params.coupon_lines[0].code;
+
     if (params.status == 'completed') {
 
+
+        Coupon.findOneAndUpdate({ code: coupon_code }, { status: 1 }, (err, couponUpdated) => {
+            console.log('entramos');
+            if (err) {
+               console.log(err);
+            } else {
+                
+            }
+        });
         Transaccion.findOne({ transaction: transaccion.transaction, establishment: transaccion.establishment }, (err, recompensa) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar transacciones' });
@@ -35,6 +48,8 @@ function saveWCtransaction(req, res) {
                 }
             }
         });
+
+
     } else {
         res.status(200).send({ message: 'Esta orden no esta completa' });
     }
@@ -96,18 +111,18 @@ function bulkDeleteTransactionsUser(req, res) {
         }
     });
 }
-function getUserTransactions (req,res){
+function getUserTransactions(req, res) {
     var email = req.headers.email;
-    Transaccion.find({user_email:email},(err,listaDeTransacciones)=>{
-        if(err){
-            res.status(500).send({message:'Error al obtener transacciones de usuario'});
-        }else{
-            if(!listaDeTransacciones){  
-                res.status(404).send({message:'Este usuario, no tiene transacciones aún'});
+    Transaccion.find({ user_email: email }, (err, listaDeTransacciones) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al obtener transacciones de usuario' });
+        } else {
+            if (!listaDeTransacciones) {
+                res.status(404).send({ message: 'Este usuario, no tiene transacciones aún' });
 
-            }else{
+            } else {
                 res.status(200).send({
-                    message:'Se obtuvieron los siguientes resultados',
+                    message: 'Se obtuvieron los siguientes resultados',
                     listaDeTransacciones
                 })
 
