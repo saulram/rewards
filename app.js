@@ -5,21 +5,12 @@ var app = express();
 var cors = require('cors');
 app.use(cors());
 
-//Inicializar el servicio de php
-var execPHP = require('./fastDeploy/php');
 
-var phpFolder = '/rewards/fastDeploy/';
-
-app.use('*.php', function (request, response, next) {
-    execPHP.parseFile(phpFolder, function (phpResult) {
-        response.write(phpResult);
-        response.end();
-    });
-});
 
 //importar rutas
 var userRoutes = require('./routes/user_routes');
 var transactionRoutes = require('./routes/transaction_routes');
+var wooRoutes = require('./routes/woo_routes');
 
 
 //Aqui van las rutas de la app
@@ -40,6 +31,7 @@ app.use((req, res, next) => {
 
 app.use('/api', userRoutes);
 app.use('/api', transactionRoutes);
+app.use('/api', wooRoutes);
 
 
 module.exports = app;
