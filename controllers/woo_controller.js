@@ -35,9 +35,10 @@ function createCoupon(req, res) {
     })
         .then((response) => {
             // Successful request
-            // console.log("Response Status:", response.status);
-            // console.log("Response Headers:", response.headers);
-            // console.log("Response Data:", response.data);
+            console.log("Response Status:", response.status);
+            console.log("Response Headers:", response.headers);
+            console.log("Response Data:", response.data);
+            
 
             if (response.status == 201) {
                 coupon.date = response.data.date_created;
