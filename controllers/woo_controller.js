@@ -9,7 +9,7 @@ const api = new WooCommerceRestApi({
 });
 
 function createCoupon(req, res) {
-    console.log(req.headers);
+   
     var coupon = Coupon();
     api.url = req.body.url;
     coupon.establishment = req.body.url
@@ -36,9 +36,9 @@ function createCoupon(req, res) {
     })
         .then((response) => {
             // Successful request
-            console.log("Response Status:", response.status);
-            console.log("Response Headers:", response.headers);
-            console.log("Response Data:", response.data);
+            // console.log("Response Status:", response.status);
+            // console.log("Response Headers:", response.headers);
+            // console.log("Response Data:", response.data);
             
 
             if (response.status == 201) {
