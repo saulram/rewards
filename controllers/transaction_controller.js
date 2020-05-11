@@ -15,11 +15,15 @@ function saveWCtransaction(req, res) {
     transaccion.user_email = params.billing.email;
     transaccion.transaction = params.number;
     transaccion.total_points = params.total * 1000
-    var coupon_code = params.coupon_lines[0].code;
+    if(params.coupon_lines[0] != null){
+        var coupon_code =  params.coupon_lines[0].code;
+    }
+     
 
     if (params.status == 'completed') {
 
 
+       if(coupon_code != null ){
         Coupon.findOneAndUpdate({ code: coupon_code }, { status: 1 }, (err, couponUpdated) => {
             console.log('entramos');
             if (err) {
@@ -28,6 +32,7 @@ function saveWCtransaction(req, res) {
                 
             }
         });
+       }
         Transaccion.findOne({ transaction: transaccion.transaction, establishment: transaccion.establishment }, (err, recompensa) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar transacciones' });
