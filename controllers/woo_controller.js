@@ -9,6 +9,7 @@ const api = new WooCommerceRestApi({
 });
 
 function createCoupon(req, res) {
+    console.log(req.headers);
     var coupon = Coupon();
     api.url = req.body.url;
     coupon.establishment = req.body.url
