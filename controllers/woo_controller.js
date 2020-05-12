@@ -1,6 +1,7 @@
 const WooCommerceRestApi = require("@woocommerce/woocommerce-rest-api").default;
 const Coupon = require('../models/coupon_model');
-
+// ck_b6b96d7e16a2634a3bc3048df9e9d336090a3a11
+// cs_9aca64ed2b7a88f079bc19a736594a80b6e4f6e6
 const api = new WooCommerceRestApi({
     url: "https",
     consumerKey: "ck_90fa160e6a3d8dc31d3d1a1727491c868d0fc6a2",
@@ -9,6 +10,7 @@ const api = new WooCommerceRestApi({
 });
 
 function createCoupon(req, res) {
+
    
     var coupon = Coupon();
     api.url = req.body.url;
