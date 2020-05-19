@@ -118,7 +118,7 @@ function bulkDeleteTransactionsUser(req, res) {
 }
 function getUserTransactions(req, res) {
     var email = req.headers.email;
-    Transaccion.populate('stablishments').find({ user_email: email }, (err, listaDeTransacciones) => {
+    Transaccion.find({ user_email: email }).populate('stablishments').exec( (err, listaDeTransacciones) => {
         if (err) {
             res.status(500).send({ message: 'Error al obtener transacciones de usuario' });
         } else {
