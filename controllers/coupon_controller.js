@@ -4,7 +4,7 @@ var Coupon = require('../models/coupon_model');
 function getUserCoupons(req, res) {
     var user_email = req.body.email;
 
-    Coupon.find({ user_email: user_email }, (err, coupons) => {
+    Coupon.find({ user_email: user_email }).populate('stablishments').exec((err, coupons) => {
         if (err) {
             res.status(500).send({ message: 'Hubo un error al crear los cupones' });
         } else {
