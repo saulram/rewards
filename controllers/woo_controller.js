@@ -19,16 +19,14 @@ function createCoupon(req, res) {
      * tipos de descuento:
      * fixed_cart,fixed_product,percent
      */
-   
 
-    switch (
-    coupon.establishment
-    ) {
+
+    switch (coupon.establishment) {
         /**
          * Configuracion para Woocommerce Aprendly
          */
         case 'https://aprendly.com': {
-             api = new WooCommerceRestApi({
+            api = new WooCommerceRestApi({
                 url: coupon.establishment,
                 consumerKey: "ck_90fa160e6a3d8dc31d3d1a1727491c868d0fc6a2",
                 consumerSecret: "cs_70831f5c5a175337be67ae51661319eb94a926d6",
@@ -51,8 +49,8 @@ function createCoupon(req, res) {
                     // console.log("Response Status:", response.status);
                     // console.log("Response Headers:", response.headers);
                     // console.log("Response Data:", response.data);
-        
-        
+
+
                     if (response.status == 201) {
                         coupon.date = response.data.date_created;
                         coupon.user_email = req.body.email;
@@ -71,19 +69,19 @@ function createCoupon(req, res) {
                                 }
                             }
                         });
-        
-        
+
+
                     }
                 })
                 .catch((error) => {
                     // Invalid request, for 4xx and 5xx statuses
                     res.status(500).send({ message: 'Error al intentar crear el cupon' });
                 })
-        
+
 
         }
-        case 'https://puntodeventa.disolutionsmx.com':{
-             api = new WooCommerceRestApi({
+        case 'https://puntodeventa.disolutionsmx.com': {
+            api = new WooCommerceRestApi({
                 url: coupon.establishment,
                 consumerKey: "ck_b6b96d7e16a2634a3bc3048df9e9d336090a3a11",
                 consumerSecret: "cs_9aca64ed2b7a88f079bc19a736594a80b6e4f6e6",
@@ -106,8 +104,8 @@ function createCoupon(req, res) {
                     // console.log("Response Status:", response.status);
                     // console.log("Response Headers:", response.headers);
                     // console.log("Response Data:", response.data);
-        
-        
+
+
                     if (response.status == 201) {
                         coupon.date = response.data.date_created;
                         coupon.user_email = req.body.email;
@@ -126,21 +124,21 @@ function createCoupon(req, res) {
                                 }
                             }
                         });
-        
-        
+
+
                     }
                 })
                 .catch((error) => {
                     // Invalid request, for 4xx and 5xx statuses
-                    res.status(500).send({ message: 'Error al intentar crear el cupon' ,error});
+                    res.status(500).send({ message: 'Error al intentar crear el cupon', error });
                 })
-        
-        }   
+
+        }
 
     }
 
 
-   
+
 
 }
 module.exports = {

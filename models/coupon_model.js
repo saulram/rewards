@@ -2,6 +2,7 @@
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
+var Stablishment = require('./stablishment_model');
 
 var CouponSchema = Schema({
     establishment: String,
@@ -11,6 +12,13 @@ var CouponSchema = Schema({
     amount:Number,
     min_amount:Number,
     status:Number
+}, { toJSON: { virtuals: true } }); 
+
+CouponSchema.virtual('stablishments', {
+    ref: Stablishment,
+    localField: 'establishment',
+    foreignField: 'url',
+    justOne: true,
 });
 
 module.exports = mongoose.model('Coupon', CouponSchema);
