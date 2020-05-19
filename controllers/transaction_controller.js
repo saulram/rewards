@@ -1,7 +1,6 @@
 'use strict'
 var Transaccion = require('../models/transaction_model');
 var Coupon = require('../models/coupon_model');
-
 //controlador woocomcerce
 function saveWCtransaction(req, res) {
 
@@ -62,7 +61,9 @@ function saveWCtransaction(req, res) {
 
 }
 function getWCtransactions(req, res) {
-    var find = Transaccion.find({}).sort('date');
+    var find = Transaccion.find({}).sort('date').populate('stablishments');
+  
+    
     find.exec((err, transacciones) => {
         if (err) {
             res.status(500).send({
@@ -97,7 +98,6 @@ function deleteUserTransaction(req, res) {
         }
     })
 }
-
 function bulkDeleteTransactionsUser(req, res) {
     var params = req.body;
     var email = params.email;

@@ -11,7 +11,7 @@ var md_upload = multipart({uploadDir: './uploads/img/users'});
 /*
 El endpoint /register, sirve para crear un usuario nuevo, si queremos que tenga rol admin, debemos pasar una cabecera en la peticion llamada: isadmin con el valor true.
 el endpoint register recibe en el body: "name","surname","email", "password"
-*/
+*/ 
 api.post('/register', UserController.saveUser);
 /*
 El EP /login sirve para iniciar sesion y devuelve un objeto con los datos de usuario y el token para las peticiones, recibe "email" y "password"

@@ -12,6 +12,7 @@ var userRoutes = require('./routes/user_routes');
 var transactionRoutes = require('./routes/transaction_routes');
 var wooRoutes = require('./routes/woo_routes');
 var couponsRoutes = require('./routes/coupon_routes');
+var stablishmentRoutes = require('./routes/stablishment_routes');
 
 
 //Aqui van las rutas de la app
@@ -34,6 +35,7 @@ app.use('/api', userRoutes);
 app.use('/api', transactionRoutes);
 app.use('/api', wooRoutes);
 app.use('/api', couponsRoutes);
+app.use('/api', stablishmentRoutes);
 
 
 module.exports = app;
