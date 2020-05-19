@@ -19,7 +19,7 @@ function saveUser(req, res) {
         console.log(isadmin);
         user.role = 'USER';
     }
-    user.profile_pic = 'null';
+    user.profile_pic = 'avatar.png';
     if (params.password) {
         //Ciframos el password y los guardamos
         bcrypt.hash(params.password, null, null, function (err, hash) {
